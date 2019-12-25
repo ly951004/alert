@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./common.css">
+    <link rel="stylesheet" href="./mescroll/common.css">
+    <link rel="stylesheet" href="./mescroll/mescroll.min.css">
+    <script src="./list.js"></script>
+    <script src="mescroll/mescroll.min.js"></script>
+    <script src="mescroll/jquery-3.4.1.min.js"></script>
+    <script src="mescroll/common.js"></script>
+    <style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    #app{
+        background-color: #fff;
+        width:100%;
+        min-height: 100vh;
+    }
+    .flex{
+        display: flex;
+        display: -webkit-flex;
+    }
+    .headBar{
+        width:100%;
+        height: 1.1733rem;
+        align-items: center;
+        position: relative;
+        border-bottom:1px solid rgba(238, 238, 238, 1)
+    }
+    .arrowImg{
+        position: absolute;
+        left: 0.2667rem;
+        top:50%;
+        transform: translateY(-50%);
+        width:0.2667rem;
+        height:0.5333rem;
+    }
+    .headText{
+        width:100%;
+        font-size: 0.48rem;
+        font-weight: bold;
+        color: rgba(24, 23, 23, 1);
+        text-align: center;
+    }
+    .contentHead{
+        width:100%;
+        height:3.32rem;
+        justify-content: space-between;
+        align-items: center;
+        box-sizing: border-box;
+        padding-left: 0.5467rem;
+        padding-right:0.4267rem
+    }
+    .headLeft{
+        flex-direction: column;
+        justify-content: center;
+    }
+    .leftTit{
+        font-size:0.32rem;
+        font-weight:bold;
+        color:rgba(130,126,126,1);
+        margin-bottom: 0.48rem;
+    }
+    .leftText{
+        font-size:0.8rem;
+        font-weight:bold;
+        color:rgba(19,19,19,1);  
+    }
+    .exchangeBtn{
+        outline: none;
+        width:2.4rem;
+        height:0.5867rem;
+        border:1px solid rgba(3,189,250,1);
+        border-radius:0.1333rem;
+        font-size:0.32rem;
+        font-weight:500;
+        color:rgba(3,189,250,1);
+        background: none;
+    }
+    .filterBox{
+        height:0.92rem;
+        width:100%;
+        position: relative;
+        z-index:1
+    }
+    .navItem{
+        position: relative;
+        height:100%;
+        width:50%;
+        box-sizing: border-box;
+        border: 1px solid rgba(238, 238, 238, 1);
+        border-left: none;
+        font-size:0.32rem;
+        font-weight:500;
+        color:rgba(32,32,32,1);
+        align-items: center;
+        justify-content: center;
+    }
+    .navItem:nth-child(1){
+        border-right: none;
+    }
+    .menulist{
+        position: absolute;
+        width:2.4667rem;
+        left: 25%;
+        top: 0.93rem;
+        transform: translateX(-50%);
+        background: #fff;
+        display: none;
+    }
+    .layerBg{
+        position: absolute;
+        width:100%;
+        height: calc(100vh - 4.41rem);
+        background: rgba(0, 0, 0, 0.5);
+        display: none;
+    }
+    .menuItem{
+        width:100%;
+        height:1.0667rem;
+        text-align: center;
+        line-height: 1.0667rem;
+        font-size:0.3467rem;
+        font-weight:bold;
+        color:rgba(0,0,17,1);
+    }
+    .menuItemSel{
+        color: rgba(3, 189, 250, 1);
+    }
+    .listItem{
+        width: 100%;
+        height:1.3333rem;
+        justify-content: space-between;
+        box-sizing: border-box;
+        padding-left: 0.4533rem;
+        padding-right: 0.4933rem;
+        align-items: center;
+    }
+    .itemleft{
+        flex-direction: column;
+        justify-content: center;
+    }
+    .itemTit{
+        font-size:0.3467rem;
+        font-weight:bold;
+        color:rgba(0,0,17,1);
+    }
+    .itemTime{
+        font-size:0.2667rem;
+        font-weight:bold;
+        color:rgba(0,0,17,1);
+    }
+    .itemNum{
+        font-size:0.3733rem;
+        font-weight:bold;
+        color:rgba(0,0,17,1);
+    }
+    .changeImg{
+        position: absolute;
+        right: 0.5333rem;
+        top: 50%;
+        margin-top: -0.1333rem;
+        widows: 0.5333rem;;
+        height:0.2667rem;
+    }
+    </style>
+    <script>
+        window.onload=function(){
+            var nav = document.getElementsByClassName('navItem')
+            var menu =document.getElementsByClassName('menulist')[0]
+            var bg = document.getElementsByClassName('layerBg')[0]
+            var changeImg = document.getElementsByClassName('changeImg')
+            var isShow = [0,0]
+            var selId=[0,0]
+            var listArr=[
+                [
+                    {text:'所有',id:0},
+                    {text:'收入',id:1},
+                    {text:'支出',id:2}
+                ],
+                [
+                    {text:'所有',id:3},
+                    {text:'云端',id:4},
+                    {text:'社区农场',id:5},
+                    {text:'社区牧场',id:6}
+                ]
+            ]
+            function innerMenu(arr,id) {
+                var str=''
+                for(var t=0;t<arr.length;t++){
+                    if(t==id){
+                        str+='<p class="menuItem menuItemSel" onclick="sel('+t+')" data-index'+arr[t].id+'>'+arr[t].text+'</p>'
+                    }else{
+                        str+='<p class="menuItem" onclick="sel('+t+')" data-index'+arr[t].text+'>'+arr[t].text+'</p>'
+                    }
+                }
+                menu.innerHTML=str;
+            }
+
+            for(var i=0;i<nav.length;i++)
+            nav[i].addEventListener('click',function(e){
+                var num = this.getAttribute('data-index')
+                var id=selId[num]
+                changeImg[0].style.transform="rotate(0deg)"
+                changeImg[1].style.transform="rotate(0deg)"
+                innerMenu(listArr[num],id)
+                if (isShow[num]==1){
+                    menu.style.display="none"
+                    bg.style.display="none"
+                    isShow=[0,0]
+                    isShow[num]=0
+                    changeImg[num].style.transform="rotate(0deg)"
+                }else{
+                    menu.style.display="block"
+                    bg.style.display="block"
+                    isShow=[0,0]
+                    isShow[num]=1
+                    changeImg[num].style.transform="rotate(180deg)"
+                }
+                if(num == 0) {
+                    menu.style.left="25%"
+                }else {
+                    menu.style.left="75%"
+                }
+            })
+            window.sel = function(num){
+                var myNum=isShow.indexOf(1)
+                selId[myNum] = num
+                // console.log(selId)
+                // console.log(isShow)
+                console.log(listArr[myNum][selId[myNum]])
+                menu.style.display="none"
+                bg.style.display="none"
+                isShow=[0,0]
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="app">
+        <header class="flex headBar">
+            <img class="arrowImg" onclick="window.history.go(-1)" src="./arrow-b.png" alt="">
+            <p class="headText">
+                我的ATOMU
+            </p>
+        </header>
+        <article class="content">
+            <header class="flex contentHead">
+                <div class="flex headLeft">
+                    <p class="leftTit">可划转至ATOMU</p>
+                    <p class="leftText">120.00000000</p>
+                </div>
+                <div class="flex headRight">
+                    <button class="exchangeBtn" >划转至云端</button>
+                </div>
+            </header>
+            <nav class="flex filterBox">
+                <div class="menulist">
+                    <p class="menuItem ">所有</p>
+                    <p class="menuItem">所有</p>
+                    <p class="menuItem">所有</p>
+                    <p class="menuItem">所有</p>
+                </div>
+                <p class="flex navItem" data-index='0'>收支明细 <img class="changeImg" src="./arrow-b.svg" alt=""></p>
+                <p class="flex navItem" data-index="1">收支类型 <img class="changeImg" src="./arrow-b.svg" alt=""></p>
+            </nav>
+            <section class="listBox">
+                <div class="layerBg"></div>
+                <div id="app">
+                    <div class="flex listItem">
+                        <div class="flex itemleft">
+                            <h5 class="itemTit">云端转入</h5>
+                            <P class="itemTime">2019-11-02  12:07:02</P>
+                        </div>
+                        <div class="itemright">
+                            <p class="itemNum">+0.00000001</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </article>
+    </div>
+    <script>
+        var token = localStorage.getItem("token");
+        var timestamp = localStorage.getItem("timestamp");
+        var list = [];
+        var nowpage = 1;
+        var lastPage = '';
+        function getData(push,page,fn){
+            $.ajax({
+                    headers: {
+                    Accept: "application/json; charset=utf-8",
+                    'token': token,
+                    'timestamp': timestamp,
+                },
+                type: "get",
+                contentType: "application/json;charset=UTF-8",
+                url: "/api/index/account1log",
+                data:{page:page.num},
+                success: function (result) {
+                    if(result.code == 100){
+                        _alert(result.message);
+                        setTimeout(function () {
+                            location.href = "/api/pages/login";
+                        }, 2000);
+                        return
+                    }
+                    nowpage=result.data.page;
+                    lastPage= result.data.pageAll;
+                    if (push) {
+                        for(var i =0;i<result.data.data.length;i++){
+                            list.push(result.data.data[i])
+                        }
+                    }else list = result.data.data;
+        
+                    if(list.length>0) insertDom();
+                    else $('.nodata').css('display','flex');
+                    if(fn) fn();
+                },
+                error: function (e) {
+                }
+            }, 'json');
+        }
+        function insertDom(){
+            var str = ''
+            for(var i=0;i<list.length;i++){
+                str+='<div class="keen"><div class="keen_warp"><p>'
+                    +list[i].create_time.split(' ')[0]
+                    +'</p><p>'+list[i].create_time.split(' ')[1]+'</p></div><p class="hund">'
+                    +list[i].type_remark+'</p><p class="hund">'
+                    +list[i].num+'</p></div>';
+                // str+='<div class="flex listItem">
+                //         <div class="flex itemleft">
+                //             <h5 class="itemTit">云端转入</h5>
+                //             <P class="itemTime">2019-11-02  12:07:02</P>
+                //         </div>
+                //         <div class="itemright">
+                //             <p class="itemNum">+0.00000001</p>
+                //         </div>
+                //     </div>'
+            }
+            $('.listBox').html(str)
+        }
+        var mescroll = new MeScroll("app", {
+            down: {
+                auto: false,
+                callback: refresh
+            },
+            up: {
+                callback: getList, 
+                htmlNodata: '<p class="upwarp-nodata">-- END --</p>',
+                noMoreSize: 5,
+            }
+        });
+        function refresh(){
+            var fresh = false
+            if(nowpage>1) fresh = true
+            getData(false,{num:1},function(){
+                mescroll.endSuccess();
+                if(fresh) mescroll.resetUpScroll(false);
+            })
+        }
+        function getList(page){
+            console.log(page)
+            getData(true,page,function(){
+                mescroll.endByPage(list.length,lastPage);
+            })
+        }
+        </script>
+</body>
+</html>

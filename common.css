@@ -1,0 +1,140 @@
+html,body,article,header,footer,section,div,p,h1,h2,h3,h4,h5,h6,ul,li,nav{
+    margin: 0;
+    padding: 0;
+}
+body{
+    font-family:PingFang SC,-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+input,button{
+    outline: none;
+    border: none;
+    padding:0;
+}
+ul{
+    list-style: none;
+}
+a{
+    text-decoration: none;
+}
+/* .flex{
+    display: flex;
+    display: -webkit-flex;
+} */
+
+/* 登录部分头部 */
+.headTit{
+	position: relative;
+	justify-content: center;
+	align-items: center;
+	height: 1.1733rem;
+	width:100%;
+}
+.headTitText{
+    font-size:0.48rem;
+    font-weight:400;
+    color:rgba(255,254,254,1);
+}
+.arrowImg{
+	position: absolute;
+	left: 0.2667rem;
+	top: 50%;
+	transform: translateY(-50%);
+	width:0.2533rem;
+	height:0.4667rem;
+}
+/* 一般页面头部 */
+._newHeadBg{
+    position: relative;
+	justify-content: center;
+	align-items: center;
+    height:1.0933rem;
+	width:100%;
+    background:rgba(16,31,70,1);
+}
+._newHeadTit{
+    font-size:0.4rem;
+    font-weight:500;
+    color:rgba(3,189,250,1);
+}
+._arrowImg{
+    position: absolute;
+	left: 0.2667rem;
+	top: 50%;
+	transform: translateY(-50%);
+	width:0.28rem;
+    height:0.3067rem;
+}
+/* 一般页面底部 */
+._footer{
+    width: 100%;
+    height: 1.4133rem;
+    position: relative;
+}
+._footNull{
+    width: 100%;
+    height: 100%;
+}
+._footContent{
+    position: fixed;
+    height: 1.4133rem;
+    left: 0;
+    bottom: 0;
+    right:0;
+    z-index: 2;
+    justify-content: space-between;
+    align-items: center;
+}
+._footItem{
+    width: 25%;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+._footItemImg{
+    margin-bottom: 0.1467rem;
+}
+.homeImg{
+    width:0.6133rem;
+    height:0.6133rem;
+}
+.calcImg{
+    width:0.5333rem;
+    height:0.6rem;
+}
+.comImg{
+    width:0.5733rem;
+    height:0.6533rem;
+}
+.myImg{
+    width:0.5467rem;
+    height:0.56rem;
+}
+._footItemText{
+    font-size:0.2667rem;
+    font-weight:bold;
+    color:rgba(255,255,255,1);
+}
+._navfootText{
+    color: rgba(3, 189, 250, 1);
+}
+/* 提示框 */
+.my_alert{
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 5;
+    align-items: center;
+    justify-content: center;
+}
+.my_alert_content{
+    background: rgba(0,0,0,07);
+    border-radius: 0.1rem;
+    padding: 0.2rem 0.4rem;
+    font-size:0.32rem;
+    font-weight:400;
+    color:rgba(255,255,255,1);
+}
